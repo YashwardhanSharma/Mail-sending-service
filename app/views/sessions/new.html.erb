@@ -1,0 +1,218 @@
+<!-- app/views/sessions/new.html.erb -->
+<style>
+  :root {
+    --primary: #3b82f6;
+    --accent: #7c3aed;
+    --border: rgba(255,255,255,0.2);
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.7);
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: url("/images.jpeg") no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: -1;
+  }
+
+  .login-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem;
+  }
+
+  .login-brand {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .login-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .login-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+  }
+
+  .login-brand h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  .login-brand p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+  }
+
+  .input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+  }
+
+  .input-wrapper svg {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  .input-wrapper input::placeholder {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .btn-login {
+    width: 100% ;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-login:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .btn-login:active {
+    transform: scale(0.98);
+  }
+
+  .btn-login svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s;
+  }
+
+  .btn-login:hover svg {
+    transform: translateX(4px);
+  }
+
+  .login-copyright {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+  }
+</style>
+
+<div class="login-wrapper">
+  <div class="login-brand">
+    <div class="login-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+      </svg>
+    </div>
+    <h1>Admin Portal</h1>
+    <p>Sign in to access your dashboard</p>
+  </div>
+
+  <%= form_with url: login_path, class: "login-card" do |f| %>
+    <div class="form-group">
+      <%= label_tag :email, "Email Address" %>
+      <div class="input-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+        </svg>
+        <%= email_field_tag :email, nil, placeholder: "admin@example.com", required: true %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :password, "Password" %>
+      <div class="input-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 002.25-2.25v-6.75a2.25 2.25 00-2.25-2.25H6.75a2.25 2.25 00-2.25 2.25v6.75a2.25 2.25 002.25 2.25z"/>
+        </svg>
+        <%= password_field_tag :password, nil, placeholder: "••••••••", required: true %>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-login">
+      Login
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+      </svg>
+    </button>
+  <% end %>
+
+  <p class="login-copyright">&copy; 2026 Admin Portal. All rights reserved.</p>
+</div>
