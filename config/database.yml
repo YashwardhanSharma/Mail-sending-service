@@ -16,10 +16,20 @@ test:
   database: mail_sending_service_test
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  database: myapp_production
-  username: yash
-  password: 123456
-  host: localhost
-  pool: 5
+  primary:
+    <<: *default
+    database: mail_sending_service_production
+    username: postgres
+    password: 1234
+
+  cable:
+    <<: *default
+    database: mail_sending_service_production
+
+  queue:
+    <<: *default
+    database: mail_sending_service_production
+
+  cache:
+    <<: *default
+    database: mail_sending_service_production
