@@ -42,12 +42,12 @@ jobs:
           
           echo "Start new container"
           docker run -d \
+          docker run -d \
             --name mail_app \
             -p 80:8080 \
             -e RAILS_ENV=production \
             -e PORT=8080 \
-            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            --add-host=host.docker.internal:host-gateway \
             --restart always \
             ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
-          
           echo "Deployment finished"

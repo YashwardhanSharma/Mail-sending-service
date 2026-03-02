@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost
+  host: host.docker.internal
   port: 5432
   username: postgres
   password: 1234
@@ -19,8 +19,6 @@ production:
   primary:
     <<: *default
     database: mail_sending_service_production
-    username: postgres
-    password: 1234
 
   cable:
     <<: *default
