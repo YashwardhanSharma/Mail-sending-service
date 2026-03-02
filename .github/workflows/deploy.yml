@@ -42,7 +42,6 @@ jobs:
           
           echo "Start new container"
           docker run -d \
-          docker run -d \
             --name mail_app \
             -p 80:8080 \
             -e RAILS_ENV=production \
