@@ -1,4 +1,4 @@
-name: Rails CI/CD Deploy
+name: Auto Deploy Rails to EC2
 
 on:
   push:
@@ -14,23 +14,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Login Docker Hub
+    - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build Image
+    - name: Build Docker Image
       run: docker build -t yashwardhan24/mail_sending_service .
 
-    - name: Push Image
+    - name: Push Docker Image
       run: docker push yashwardhan24/mail_sending_service
 
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v1
+    - name: Deploy on EC2 via SSH
+      uses: appleboy/ssh-action@v1.0.3
 
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+
+          echo "Deploy started"
 
           docker stop mail_app || true
           docker rm mail_app || true
@@ -40,5 +42,7 @@ jobs:
           docker run -d \
             -p 80:8080 \
             --name mail_app \
-            -e RAILS_ENV=production \
+            --restart always \
             yashwardhan24/mail_sending_service
+
+          echo "Deploy finished"
