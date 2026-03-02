@@ -1,11 +1,11 @@
-name: Auto Deploy Rails to EC2
+name: Deploy Rails App to EC2
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
 
@@ -15,34 +15,32 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker Image
-      run: docker build -t yashwardhan24/mail_sending_service .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mail_sending_service .
 
     - name: Push Docker Image
-      run: docker push yashwardhan24/mail_sending_service
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
 
     - name: Deploy on EC2 via SSH
       uses: appleboy/ssh-action@v1.0.3
-
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-
-          echo "Deploy started"
-
+          docker pull ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
+          
           docker stop mail_app || true
           docker rm mail_app || true
-
-          docker pull yashwardhan24/mail_sending_service
-
+          
           docker run -d \
-            -p 80:8080 \
             --name mail_app \
-            --restart always \
-            yashwardhan24/mail_sending_service
-
-          echo "Deploy finished"
+            -p 80:8080 \
+            -e RAILS_ENV=production \
+            -e PORT=8080 \
+            ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
