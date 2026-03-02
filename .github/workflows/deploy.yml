@@ -33,14 +33,21 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          echo "Pull latest image"
           docker pull ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
           
+          echo "Stop old container"
           docker stop mail_app || true
           docker rm mail_app || true
           
+          echo "Start new container"
           docker run -d \
             --name mail_app \
             -p 80:8080 \
             -e RAILS_ENV=production \
             -e PORT=8080 \
+            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            --restart always \
             ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
+          
+          echo "Deployment finished"
