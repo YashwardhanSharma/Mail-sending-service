@@ -74,7 +74,6 @@ gem 'devise'             # for authentication if needed
 gem 'httparty'           # to call firewall API
 gem 'sidekiq'            # for background jobs (mail sending)
 gem 'redis'              # Sidekiq dependency
-gem 'dotenv-rails'       # store API keys & firewall credentials
 gem 'firebase-admin' # official Firebase Admin SDK for Ruby
 gem 'dotenv-rails'   # to store Firebase credentials
 gem "google-cloud-firestore"
