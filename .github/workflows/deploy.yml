@@ -40,6 +40,9 @@ jobs:
           docker stop mail_app || true
           docker rm mail_app || true
           
+          echo "Create Firebase credentials file"
+          echo '${{ secrets.FIREBASE_CREDENTIALS_JSON }}' > firebase.json
+
           echo "Start new container"
           sudo docker run -d \
             --name mail_app \
@@ -48,6 +51,9 @@ jobs:
             -e PORT=8080 \
             -e SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} \
             -e DATABASE_URL=postgresql://yash:${{ secrets.DB_PASSWORD }}@172.17.0.1:5432/myapp_production \
+            -e FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
+            -e FIREBASE_CREDENTIALS=/app/firebase.json \
+            -v $(pwd)/firebase.json:/app/firebase.json \
             --add-host=host.docker.internal:host-gateway \
             --restart always \
             ${{ secrets.DOCKER_USERNAME }}/mail_sending_service:latest
