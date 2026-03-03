@@ -47,7 +47,8 @@ jobs:
             -e RAILS_ENV=production \
             -e PORT=8080 \
             -e SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} \
+            -e DATABASE_URL=postgresql://yash:${{ secrets.DB_PASSWORD }}@172.17.0.1:5432/myapp_production \
             --add-host=host.docker.internal:host-gateway \
             --restart always \
-            ${{ secrets.DOCKER_USERNAME }}/mail_sending_service
+            ${{ secrets.DOCKER_USERNAME }}/mail_sending_service:latest
           echo "Deployment finished"
