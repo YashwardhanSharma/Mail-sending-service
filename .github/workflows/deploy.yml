@@ -43,7 +43,7 @@ jobs:
           echo "Start new container"
           sudo docker run -d \
             --name mail_app \
-            -p 80:8080 \
+            -p 3000:8080 \
             -e RAILS_ENV=production \
             -e PORT=8080 \
             -e SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} \
