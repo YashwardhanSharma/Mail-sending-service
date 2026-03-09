@@ -27,7 +27,7 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/mail_sending_service:latest
 
     - name: Deploy on EC2 via SSH
-      uses: appleboy/ssh-action@v1.0.3
+      uses: appleboy/ssh-action@v1.2.5
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
